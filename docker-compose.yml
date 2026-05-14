@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: fastq-qc-app
+    ports:
+      - "8000:8000"
+    environment:
+      DATA_DIR: /app/data
+      FASTQC_WORKERS: 4
+      MAX_UPLOAD_GB: 10
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-deepseek/deepseek-chat-v3-0324:free}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

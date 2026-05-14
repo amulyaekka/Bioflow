@@ -1,3 +1,8 @@
 {
+  "functions": {
+    "api/**/*.py": {
+      "excludeFiles": "{data/**,frontend/**,backend/**,.git/**,.venv/**,venv/**,__pycache__/**,**/__pycache__/**,*.fastq,*.fastq.gz,*.zip,*.html,Dockerfile,docker-compose.yml,.dockerignore}"
+    }
+  },
   "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
 }

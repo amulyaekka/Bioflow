@@ -1,0 +1,10 @@
+{
+  "input": "samplesheet.csv",
+  "outdir": "./VAI_RNAseq_Results",
+  "email": "menonadisri@gmail.com",
+  "genome": "GRCh38",
+  "trimmer": "fastp",
+  "save_reference": true,
+  "save_trimmed": true,
+  "multiqc_title": "AI-Assisted Reproducible Transcriptomics Analysis"
+}

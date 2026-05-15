@@ -92,6 +92,7 @@ class PipelineJob:
     files: list[Path]
     original_names: list[str]
     condition_labels: list[str]
+    genome: str
     fastp_trim: bool
     status: str = "created"
     state: StreamState = field(default_factory=StreamState)
@@ -699,6 +700,7 @@ def pipeline_manifest(job: PipelineJob) -> dict[str, Any]:
         "files": [path.name for path in job.files],
         "original_names": job.original_names,
         "condition_labels": job.condition_labels,
+        "genome": job.genome,
         "fastp_trim": job.fastp_trim,
         "status": job.status,
         "updated_at": utc_now(),
@@ -1072,6 +1074,7 @@ async def create_run(files: list[UploadFile] = File(...)) -> JSONResponse:
 async def create_pipeline_run(
     files: list[UploadFile] = File(...),
     condition_labels: str = Form(...),
+    genome: str = Form("GRCh38"),
     fastp_trim: bool = Form(True),
 ) -> JSONResponse:
     if not files:
@@ -1092,6 +1095,9 @@ async def create_pipeline_run(
         raise HTTPException(status_code=400, detail="condition_labels must contain one non-empty label per file.")
     if len(set(labels)) < 2:
         raise HTTPException(status_code=400, detail="Provide at least two condition labels for differential expression.")
+    allowed_genomes = {"GRCh38", "GRCh37", "GRCm39", "GRCm38", "Rnor6", "GRCz11", "TAIR10", "WBcel235"}
+    if genome not in allowed_genomes:
+        raise HTTPException(status_code=400, detail="Choose a supported genome assembly.")
 
     job_id = uuid.uuid4().hex
     created_at = utc_now()
@@ -1115,6 +1121,7 @@ async def create_pipeline_run(
         files=saved_paths,
         original_names=[file.filename or path.name for file, path in zip(files, saved_paths)],
         condition_labels=[label.strip() for label in labels],
+        genome=genome,
         fastp_trim=fastp_trim,
     )
     pipeline_jobs[job_id] = job

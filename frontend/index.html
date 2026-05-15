@@ -1008,6 +1008,27 @@
         color: var(--text);
       }
 
+      .field-label {
+        display: grid;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .select-input {
+        min-height: 44px;
+        border: 1px solid var(--line-strong);
+        border-radius: 8px;
+        padding: 9px 12px;
+        background: var(--surface);
+        color: var(--text);
+        font-size: 1rem;
+        letter-spacing: 0;
+      }
+
       .checkbox-row {
         display: flex;
         align-items: center;
@@ -1322,6 +1343,19 @@
                   <input id="pipeline-file-input" type="file" accept=".fastq,.fastq.gz" multiple hidden />
                 </div>
                 <p class="validation" id="pipeline-validation" role="alert"></p>
+                <label class="field-label">
+                  Reference Genome
+                  <select class="select-input" id="genome-select">
+                    <option value="GRCh38">GRCh38 (Human hg38)</option>
+                    <option value="GRCh37">GRCh37 (Human hg19)</option>
+                    <option value="GRCm39">GRCm39 (Mouse mm39)</option>
+                    <option value="GRCm38">GRCm38 (Mouse mm10)</option>
+                    <option value="Rnor6">Rnor6 (Rat rn6)</option>
+                    <option value="GRCz11">GRCz11 (Zebrafish danRer11)</option>
+                    <option value="TAIR10">TAIR10 (Arabidopsis)</option>
+                    <option value="WBcel235">WBcel235 (C. elegans)</option>
+                  </select>
+                </label>
                 <div class="file-list" id="pipeline-file-list"></div>
                 <div class="condition-list" id="condition-list"></div>
                 <label class="checkbox-row">
@@ -1452,6 +1486,7 @@
         pipelineValidation: document.getElementById("pipeline-validation"),
         pipelineFileList: document.getElementById("pipeline-file-list"),
         conditionList: document.getElementById("condition-list"),
+        genomeSelect: document.getElementById("genome-select"),
         fastpTrim: document.getElementById("fastp-trim"),
         pipelineRunButton: document.getElementById("pipeline-run-button"),
         pipelineClearButton: document.getElementById("pipeline-clear-button"),
@@ -2222,6 +2257,7 @@
         const formData = new FormData();
         selectedPipelineFiles.forEach((file) => formData.append("files", file));
         formData.append("condition_labels", JSON.stringify(labels));
+        formData.append("genome", refs.genomeSelect.value);
         formData.append("fastp_trim", refs.fastpTrim.checked ? "true" : "false");
 
         try {

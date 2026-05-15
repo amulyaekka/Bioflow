@@ -2,3 +2,10 @@ fastapi>=0.115,<1.0
 mangum>=0.19,<1.0
 python-multipart>=0.0.12,<1.0
 multiqc>=1.25,<2.0
+pydeseq2
+matplotlib
+seaborn
+pandas
+numpy
+scipy
+anndata

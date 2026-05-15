@@ -4,5 +4,6 @@ __pycache__/
 .env
 data/uploads/*
 data/results/*
+data/reference/*
 !data/uploads/.gitkeep
 !data/results/.gitkeep

@@ -114,7 +114,7 @@
       .app {
         min-height: 100vh;
         display: grid;
-        grid-template-rows: auto 1fr;
+        grid-template-rows: auto auto 1fr auto;
       }
 
       .topbar {
@@ -132,6 +132,45 @@
 
       body[data-theme="dark"] .topbar {
         background: rgba(15, 23, 42, 0.86);
+      }
+
+      .tabbar {
+        display: flex;
+        gap: 8px;
+        padding: 12px 28px;
+        background: rgba(255, 255, 255, 0.72);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(14px);
+      }
+
+      body[data-theme="dark"] .tabbar {
+        background: rgba(15, 23, 42, 0.72);
+      }
+
+      .tab-button {
+        min-height: 38px;
+        border-radius: 999px;
+        padding: 8px 14px;
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid transparent;
+        cursor: pointer;
+        font-weight: 760;
+      }
+
+      .tab-button.active {
+        color: var(--accent-strong);
+        background: var(--blue-soft);
+        border-color: var(--accent);
+      }
+
+      .tab-panel {
+        display: none;
+        min-height: 0;
+      }
+
+      .tab-panel.active {
+        display: block;
       }
 
       .brand {
@@ -845,11 +884,47 @@
       }
 
       .history-row {
-        cursor: pointer;
+        cursor: default;
       }
 
       .history-row:hover {
         border-color: var(--accent);
+      }
+
+      .history-open {
+        min-width: 0;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: inherit;
+        text-align: left;
+        display: grid;
+        gap: 4px;
+        cursor: pointer;
+      }
+
+      .history-open:disabled {
+        cursor: not-allowed;
+        opacity: 0.65;
+      }
+
+      .history-actions {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        gap: 8px;
+      }
+
+      .delete-run {
+        min-height: 32px;
+        padding: 6px 9px;
+        border: 1px solid transparent;
+        color: var(--red);
+      }
+
+      .delete-run:hover:not(:disabled) {
+        border-color: var(--red);
+        background: var(--red-soft);
       }
 
       .status {
@@ -888,6 +963,134 @@
         color: var(--muted);
       }
 
+      .pipeline-page {
+        padding: 18px 28px 28px;
+        display: grid;
+        gap: 16px;
+        max-width: 1480px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .pipeline-grid {
+        display: grid;
+        grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+        gap: 16px;
+      }
+
+      .warning-box {
+        border: 1px solid #f59e0b;
+        background: var(--amber-soft);
+        color: var(--amber-text);
+        border-radius: 8px;
+        padding: 12px;
+        line-height: 1.45;
+      }
+
+      .condition-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .condition-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(120px, 150px);
+        gap: 8px;
+        align-items: center;
+      }
+
+      .condition-input {
+        min-height: 34px;
+        border: 1px solid var(--line-strong);
+        border-radius: 8px;
+        padding: 7px 9px;
+        background: var(--surface);
+        color: var(--text);
+      }
+
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .pipeline-results {
+        display: none;
+        gap: 16px;
+      }
+
+      .pipeline-results.visible {
+        display: grid;
+      }
+
+      .plot-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .plot-panel {
+        display: none;
+      }
+
+      .plot-panel.active {
+        display: grid;
+        gap: 10px;
+      }
+
+      .plot-panel img {
+        width: 100%;
+        max-height: 620px;
+        object-fit: contain;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      .results-table-wrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      .results-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88rem;
+      }
+
+      .results-table th,
+      .results-table td {
+        padding: 9px 10px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+      }
+
+      .results-table th {
+        cursor: pointer;
+        color: var(--muted);
+        background: var(--surface-muted);
+      }
+
+      .results-table tr.significant {
+        background: var(--red-soft);
+      }
+
+      .app-footer {
+        padding: 14px 28px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        text-align: center;
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      body[data-theme="dark"] .app-footer {
+        background: rgba(15, 23, 42, 0.62);
+      }
+
       .empty {
         border: 1px dashed var(--line-strong);
         border-radius: 8px;
@@ -909,6 +1112,10 @@
 
       @media (max-width: 980px) {
         .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .pipeline-grid {
           grid-template-columns: 1fr;
         }
 
@@ -986,6 +1193,12 @@
         </div>
       </header>
 
+      <nav class="tabbar" aria-label="BioFlow views">
+        <button class="tab-button active" id="qc-tab" type="button" data-tab="qc">QC Analysis</button>
+        <button class="tab-button" id="pipeline-tab" type="button" data-tab="pipeline">RNA-seq Pipeline</button>
+      </nav>
+
+      <div class="tab-panel active" id="qc-tab-panel">
       <div class="workspace">
         <aside class="sidebar">
           <section class="panel tool-panel" aria-labelledby="upload-title">
@@ -1030,6 +1243,9 @@
                 <button class="btn btn-secondary" id="chat-button" type="button" disabled>Chat About Report</button>
                 <a class="link-btn" id="open-report" href="#" target="_blank" rel="noopener" aria-disabled="true">
                   Open in new tab
+                </a>
+                <a class="link-btn" id="download-report" href="#" download="multiqc_report.html" aria-disabled="true">
+                  Download report
                 </a>
               </div>
             </div>
@@ -1080,6 +1296,108 @@
           </section>
         </main>
       </div>
+      </div>
+
+      <section class="tab-panel" id="pipeline-tab-panel">
+        <div class="pipeline-page">
+          <section class="panel tool-panel" id="reference-setup-panel" aria-labelledby="reference-title">
+            <h2 class="panel-title" id="reference-title">Reference Setup</h2>
+            <div class="warning-box">
+              Reference index not built. Click Setup to download Ensembl transcriptome (~2GB) and build Salmon index (~10 min).
+            </div>
+            <div class="button-row" style="margin-top: 12px">
+              <button class="btn btn-primary" id="setup-reference-button" type="button">Setup Reference</button>
+              <span class="muted" id="reference-status-text"></span>
+            </div>
+          </section>
+
+          <div class="pipeline-grid" id="pipeline-ui">
+            <aside class="sidebar">
+              <section class="panel tool-panel" aria-labelledby="pipeline-config-title">
+                <h2 class="panel-title" id="pipeline-config-title">Pipeline Config</h2>
+                <div class="drop-zone" id="pipeline-drop-zone">
+                  <strong>Drop RNA-seq FASTQ files</strong>
+                  <span>.fastq and .fastq.gz, one condition label per file</span>
+                  <button class="btn btn-secondary" id="pipeline-choose-files" type="button">Choose files</button>
+                  <input id="pipeline-file-input" type="file" accept=".fastq,.fastq.gz" multiple hidden />
+                </div>
+                <p class="validation" id="pipeline-validation" role="alert"></p>
+                <div class="file-list" id="pipeline-file-list"></div>
+                <div class="condition-list" id="condition-list"></div>
+                <label class="checkbox-row">
+                  <input id="fastp-trim" type="checkbox" checked />
+                  <span>Enable fastp trimming</span>
+                </label>
+                <div class="button-row run-actions">
+                  <button class="btn btn-primary" id="pipeline-run-button" type="button" disabled>Run Pipeline</button>
+                  <button class="btn btn-secondary" id="pipeline-clear-button" type="button" disabled>Clear</button>
+                </div>
+              </section>
+            </aside>
+
+            <main class="main">
+              <section class="log-panel" aria-labelledby="pipeline-log-title">
+                <div class="log-header">
+                  <h2 class="panel-title" id="pipeline-log-title">Pipeline Progress</h2>
+                  <span class="muted" id="pipeline-current-job"></span>
+                </div>
+                <div class="log" id="pipeline-log" aria-live="polite"></div>
+              </section>
+
+              <section class="pipeline-results" id="pipeline-results">
+                <section class="panel tool-panel" aria-labelledby="plots-title">
+                  <h2 class="panel-title" id="plots-title">Transcriptomics Visualizations</h2>
+                  <div class="plot-tabs" id="plot-tabs">
+                    <button class="tab-button active" type="button" data-plot="volcano">Volcano Plot</button>
+                    <button class="tab-button" type="button" data-plot="ma">MA Plot</button>
+                    <button class="tab-button" type="button" data-plot="pca">PCA Plot</button>
+                    <button class="tab-button" type="button" data-plot="heatmap">Heatmap</button>
+                  </div>
+                  <div class="plot-panel active" data-plot-panel="volcano">
+                    <img id="volcano-img" alt="Volcano plot" />
+                    <p class="muted" id="volcano-stats"></p>
+                  </div>
+                  <div class="plot-panel" data-plot-panel="ma">
+                    <img id="ma-img" alt="MA plot" />
+                    <p class="muted" id="ma-stats"></p>
+                  </div>
+                  <div class="plot-panel" data-plot-panel="pca">
+                    <img id="pca-img" alt="PCA plot" />
+                    <p class="muted" id="pca-stats"></p>
+                  </div>
+                  <div class="plot-panel" data-plot-panel="heatmap">
+                    <img id="heatmap-img" alt="Heatmap" />
+                    <p class="muted" id="heatmap-stats"></p>
+                  </div>
+                </section>
+
+                <section class="panel tool-panel" aria-labelledby="deseq-title">
+                  <h2 class="panel-title" id="deseq-title">DESeq2 Results</h2>
+                  <div class="results-table-wrap">
+                    <table class="results-table" id="deseq-table"></table>
+                  </div>
+                </section>
+
+                <section class="content-tile" aria-labelledby="interpretation-title">
+                  <div class="tile-header">
+                    <h3 class="panel-title" id="interpretation-title">AI Biological Interpretation</h3>
+                    <span class="muted">Mistral via OpenRouter</span>
+                  </div>
+                  <div class="tile-body">
+                    <div class="summary-panel visible">
+                      <div class="summary-text" id="pipeline-interpretation"></div>
+                    </div>
+                  </div>
+                </section>
+              </section>
+            </main>
+          </div>
+        </div>
+      </section>
+
+      <footer class="app-footer">
+        Powered by nf-core inspired RNA-seq workflow · Salmon · PyDESeq2 · FastQC · MultiQC · BioFlow v2.0
+      </footer>
     </div>
 
     <script>
@@ -1105,6 +1423,7 @@
         reportFrame: document.getElementById("report-frame"),
         emptyReport: document.getElementById("empty-report"),
         openReport: document.getElementById("open-report"),
+        downloadReport: document.getElementById("download-report"),
         tileStack: document.getElementById("tile-stack"),
         summaryButton: document.getElementById("summary-button"),
         chatButton: document.getElementById("chat-button"),
@@ -1119,15 +1438,54 @@
         chatForm: document.getElementById("chat-form"),
         chatInput: document.getElementById("chat-input"),
         chatSendButton: document.getElementById("chat-send-button"),
+        qcTab: document.getElementById("qc-tab"),
+        pipelineTab: document.getElementById("pipeline-tab"),
+        qcTabPanel: document.getElementById("qc-tab-panel"),
+        pipelineTabPanel: document.getElementById("pipeline-tab-panel"),
+        referenceSetupPanel: document.getElementById("reference-setup-panel"),
+        referenceStatusText: document.getElementById("reference-status-text"),
+        setupReferenceButton: document.getElementById("setup-reference-button"),
+        pipelineUi: document.getElementById("pipeline-ui"),
+        pipelineFileInput: document.getElementById("pipeline-file-input"),
+        pipelineChooseFiles: document.getElementById("pipeline-choose-files"),
+        pipelineDropZone: document.getElementById("pipeline-drop-zone"),
+        pipelineValidation: document.getElementById("pipeline-validation"),
+        pipelineFileList: document.getElementById("pipeline-file-list"),
+        conditionList: document.getElementById("condition-list"),
+        fastpTrim: document.getElementById("fastp-trim"),
+        pipelineRunButton: document.getElementById("pipeline-run-button"),
+        pipelineClearButton: document.getElementById("pipeline-clear-button"),
+        pipelineLog: document.getElementById("pipeline-log"),
+        pipelineCurrentJob: document.getElementById("pipeline-current-job"),
+        pipelineResults: document.getElementById("pipeline-results"),
+        plotTabs: document.getElementById("plot-tabs"),
+        volcanoImg: document.getElementById("volcano-img"),
+        maImg: document.getElementById("ma-img"),
+        pcaImg: document.getElementById("pca-img"),
+        heatmapImg: document.getElementById("heatmap-img"),
+        volcanoStats: document.getElementById("volcano-stats"),
+        maStats: document.getElementById("ma-stats"),
+        pcaStats: document.getElementById("pca-stats"),
+        heatmapStats: document.getElementById("heatmap-stats"),
+        deseqTable: document.getElementById("deseq-table"),
+        pipelineInterpretation: document.getElementById("pipeline-interpretation"),
       };
 
       let selectedFiles = [];
+      let selectedPipelineFiles = [];
+      let pipelineConditionLabels = [];
       let activeSource = null;
+      let activePipelineSource = null;
+      let activeReferenceSource = null;
       let isRunning = false;
+      let isPipelineRunning = false;
       let streamIssueShown = false;
       let currentJobId = "";
+      let currentPipelineJobId = "";
       let tileFocus = "balanced";
       let chatHistory = [];
+      let deseqRows = [];
+      let deseqSort = { key: "padj", direction: 1 };
 
       function applyTheme(theme) {
         document.body.dataset.theme = theme;
@@ -1354,9 +1712,13 @@
         if (url) {
           refs.openReport.href = url;
           refs.openReport.setAttribute("aria-disabled", "false");
+          refs.downloadReport.href = url;
+          refs.downloadReport.setAttribute("aria-disabled", "false");
         } else {
           refs.openReport.href = "#";
           refs.openReport.setAttribute("aria-disabled", "true");
+          refs.downloadReport.href = "#";
+          refs.downloadReport.setAttribute("aria-disabled", "true");
         }
       }
 
@@ -1560,6 +1922,8 @@
             isRunning = false;
             activeSource.close();
             setRunState("complete", payload.status === "completed_with_warnings" ? "Complete with warnings" : "Complete");
+            selectedFiles = [];
+            refs.fileInput.value = "";
             renderFiles();
             loadJobs();
           }
@@ -1608,11 +1972,12 @@
         }
 
         jobs.forEach((job) => {
-          const row = document.createElement("button");
-          row.type = "button";
+          const row = document.createElement("div");
           row.className = "history-row";
-          row.disabled = !job.report_url;
-          const details = document.createElement("div");
+          const details = document.createElement("button");
+          details.type = "button";
+          details.className = "history-open";
+          details.disabled = !job.report_url;
           const id = document.createElement("span");
           id.className = "job-id";
           id.title = job.job_id;
@@ -1625,8 +1990,19 @@
           const status = document.createElement("span");
           status.className = `status ${job.status}`;
           status.textContent = statusLabel(job.status);
-          row.append(details, status);
-          row.addEventListener("click", () => {
+
+          const deleteButton = document.createElement("button");
+          deleteButton.type = "button";
+          deleteButton.className = "btn btn-text delete-run";
+          deleteButton.textContent = "Delete";
+          deleteButton.title = "Delete saved report";
+          deleteButton.addEventListener("click", () => deleteJob(job));
+
+          const actions = document.createElement("div");
+          actions.className = "history-actions";
+          actions.append(status, deleteButton);
+          row.append(details, actions);
+          details.addEventListener("click", () => {
             if (!job.report_url) return;
             refs.currentJob.textContent = `Job ${job.job_id.slice(0, 8)}`;
             currentJobId = job.job_id;
@@ -1643,6 +2019,354 @@
           refs.historyList.appendChild(row);
         });
       }
+
+      async function deleteJob(job) {
+        const shortId = job.job_id.slice(0, 8);
+        if (!confirm(`Delete saved reports for job ${shortId}? This cannot be undone.`)) return;
+
+        try {
+          const response = await fetch(`/api/jobs/${encodeURIComponent(job.job_id)}`, {
+            method: "DELETE",
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            throw new Error(normalizeError(payload.detail || payload));
+          }
+
+          addLog(`Deleted saved report for ${job.job_id}.`);
+          if (currentJobId === job.job_id) {
+            currentJobId = "";
+            refs.currentJob.textContent = "";
+            clearSummary();
+            setReport("");
+            setRunState("idle", "Idle");
+          }
+          loadJobs();
+        } catch (error) {
+          addLog(error.message, "error");
+        }
+      }
+
+      function switchAppTab(tab) {
+        const isPipeline = tab === "pipeline";
+        refs.qcTab.classList.toggle("active", !isPipeline);
+        refs.pipelineTab.classList.toggle("active", isPipeline);
+        refs.qcTabPanel.classList.toggle("active", !isPipeline);
+        refs.pipelineTabPanel.classList.toggle("active", isPipeline);
+        if (isPipeline) checkReferenceStatus();
+      }
+
+      function setPipelineValidation(message) {
+        refs.pipelineValidation.textContent = message || "";
+      }
+
+      function addPipelineLog(message, level = "info") {
+        const row = document.createElement("div");
+        row.className = `log-line ${level}`;
+        const time = new Intl.DateTimeFormat(undefined, {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }).format(new Date());
+        row.innerHTML = `<time>${time}</time><span></span>`;
+        row.querySelector("span").textContent = message;
+        refs.pipelineLog.appendChild(row);
+        refs.pipelineLog.scrollTop = refs.pipelineLog.scrollHeight;
+      }
+
+      function clearPipelineLog() {
+        refs.pipelineLog.innerHTML = "";
+      }
+
+      function renderPipelineFiles() {
+        refs.pipelineFileList.innerHTML = "";
+        refs.conditionList.innerHTML = "";
+        if (!selectedPipelineFiles.length) {
+          refs.pipelineFileList.innerHTML = '<div class="empty">No files selected</div>';
+        } else {
+          selectedPipelineFiles.forEach((file, index) => {
+            const row = document.createElement("div");
+            row.className = "file-row";
+            const details = document.createElement("div");
+            const name = document.createElement("span");
+            name.className = "file-name";
+            name.textContent = file.name;
+            const meta = document.createElement("span");
+            meta.className = "file-meta";
+            meta.textContent = formatBytes(file.size);
+            details.append(name, meta);
+            const remove = document.createElement("button");
+            remove.className = "btn btn-text";
+            remove.type = "button";
+            remove.textContent = "Remove";
+            remove.addEventListener("click", () => {
+              selectedPipelineFiles.splice(index, 1);
+              pipelineConditionLabels.splice(index, 1);
+              renderPipelineFiles();
+            });
+            row.append(details, remove);
+            refs.pipelineFileList.appendChild(row);
+
+            const conditionRow = document.createElement("label");
+            conditionRow.className = "condition-row";
+            const label = document.createElement("span");
+            label.textContent = file.name;
+            const input = document.createElement("input");
+            input.className = "condition-input";
+            input.placeholder = index % 2 === 0 ? "control" : "treatment";
+            input.value = pipelineConditionLabels[index] || "";
+            input.addEventListener("input", () => {
+              pipelineConditionLabels[index] = input.value;
+            });
+            conditionRow.append(label, input);
+            refs.conditionList.appendChild(conditionRow);
+          });
+        }
+        refs.pipelineRunButton.disabled = !selectedPipelineFiles.length || isPipelineRunning;
+        refs.pipelineClearButton.disabled = !selectedPipelineFiles.length || isPipelineRunning;
+      }
+
+      function addPipelineFiles(fileList) {
+        setPipelineValidation("");
+        const incoming = Array.from(fileList || []);
+        const accepted = [];
+        for (const file of incoming) {
+          if (!isAllowedFile(file)) {
+            setPipelineValidation(`${file.name} is not a FASTQ file.`);
+            continue;
+          }
+          if (file.size > MAX_FILE_BYTES) {
+            setPipelineValidation(`${file.name} is larger than 10 GB.`);
+            continue;
+          }
+          accepted.push(file);
+        }
+        selectedPipelineFiles = [...selectedPipelineFiles, ...accepted].slice(0, MAX_FILES);
+        while (pipelineConditionLabels.length < selectedPipelineFiles.length) {
+          pipelineConditionLabels.push("");
+        }
+        pipelineConditionLabels = pipelineConditionLabels.slice(0, selectedPipelineFiles.length);
+        renderPipelineFiles();
+      }
+
+      function clearPipelineFiles() {
+        selectedPipelineFiles = [];
+        pipelineConditionLabels = [];
+        refs.pipelineFileInput.value = "";
+        renderPipelineFiles();
+        setPipelineValidation("");
+      }
+
+      async function checkReferenceStatus() {
+        try {
+          const response = await fetch("/api/reference-status");
+          if (!response.ok) throw new Error("Could not check reference status.");
+          const status = await response.json();
+          refs.referenceSetupPanel.style.display = status.ready ? "none" : "block";
+          refs.pipelineUi.style.display = status.ready ? "grid" : "none";
+          refs.referenceStatusText.textContent = status.ready ? "Reference ready" : status.status || "";
+        } catch (error) {
+          refs.referenceStatusText.textContent = error.message;
+        }
+      }
+
+      async function setupReference() {
+        refs.setupReferenceButton.disabled = true;
+        clearPipelineLog();
+        addPipelineLog("Starting reference setup.");
+        try {
+          const response = await fetch("/api/setup-reference");
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(normalizeError(payload.detail || payload));
+          if (activeReferenceSource) activeReferenceSource.close();
+          activeReferenceSource = new EventSource("/api/setup-reference/stream");
+          activeReferenceSource.onmessage = (event) => {
+            const payload = JSON.parse(event.data);
+            addPipelineLog(payload.message || payload.type, payload.type === "error" ? "error" : "info");
+            if (payload.type === "done") {
+              activeReferenceSource.close();
+              refs.setupReferenceButton.disabled = false;
+              checkReferenceStatus();
+            }
+            if (payload.type === "error") {
+              activeReferenceSource.close();
+              refs.setupReferenceButton.disabled = false;
+            }
+          };
+        } catch (error) {
+          addPipelineLog(error.message, "error");
+          refs.setupReferenceButton.disabled = false;
+        }
+      }
+
+      async function runPipeline() {
+        const labels = pipelineConditionLabels.map((label) => label.trim());
+        if (labels.length !== selectedPipelineFiles.length || labels.some((label) => !label)) {
+          setPipelineValidation("Add one condition label for each FASTQ file.");
+          return;
+        }
+        if (new Set(labels).size < 2) {
+          setPipelineValidation("Use at least two conditions, such as control and treatment.");
+          return;
+        }
+
+        isPipelineRunning = true;
+        refs.pipelineRunButton.disabled = true;
+        refs.pipelineClearButton.disabled = true;
+        refs.pipelineResults.classList.remove("visible");
+        refs.pipelineInterpretation.textContent = "";
+        refs.pipelineCurrentJob.textContent = "";
+        clearPipelineLog();
+        addPipelineLog(`Uploading ${selectedPipelineFiles.length} file(s).`);
+
+        const formData = new FormData();
+        selectedPipelineFiles.forEach((file) => formData.append("files", file));
+        formData.append("condition_labels", JSON.stringify(labels));
+        formData.append("fastp_trim", refs.fastpTrim.checked ? "true" : "false");
+
+        try {
+          const response = await fetch("/api/run-pipeline", {
+            method: "POST",
+            body: formData,
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(normalizeError(payload.detail || payload));
+
+          currentPipelineJobId = payload.job_id;
+          refs.pipelineCurrentJob.textContent = `Job ${currentPipelineJobId.slice(0, 8)}`;
+          addPipelineLog(`Pipeline job ${currentPipelineJobId} queued.`);
+          if (activePipelineSource) activePipelineSource.close();
+          activePipelineSource = new EventSource(`/api/run-pipeline/${encodeURIComponent(currentPipelineJobId)}/stream`);
+          activePipelineSource.onmessage = (event) => {
+            const payload = JSON.parse(event.data);
+            addPipelineLog(payload.message || payload.type, payload.type === "error" ? "error" : "info");
+            if (payload.type === "done") {
+              activePipelineSource.close();
+              isPipelineRunning = false;
+              selectedPipelineFiles = [];
+              pipelineConditionLabels = [];
+              refs.pipelineFileInput.value = "";
+              renderPipelineFiles();
+              loadPipelineResults(currentPipelineJobId);
+            }
+            if (payload.type === "error") {
+              activePipelineSource.close();
+              isPipelineRunning = false;
+              renderPipelineFiles();
+            }
+          };
+          activePipelineSource.onerror = () => {
+            addPipelineLog("Pipeline stream disconnected. Reconnecting automatically.", "warn");
+          };
+        } catch (error) {
+          addPipelineLog(error.message, "error");
+          isPipelineRunning = false;
+          renderPipelineFiles();
+        }
+      }
+
+      function formatStat(value, digits = 3) {
+        const number = Number(value);
+        if (!Number.isFinite(number)) return "";
+        if (Math.abs(number) >= 1000 || Math.abs(number) < 0.001) return number.toExponential(2);
+        return number.toFixed(digits);
+      }
+
+      function renderDeseqTable(rows) {
+        const sorted = [...rows].sort((a, b) => {
+          const av = Number(a[deseqSort.key]);
+          const bv = Number(b[deseqSort.key]);
+          if (Number.isFinite(av) && Number.isFinite(bv)) return (av - bv) * deseqSort.direction;
+          return String(a[deseqSort.key] || "").localeCompare(String(b[deseqSort.key] || "")) * deseqSort.direction;
+        });
+        const topRows = sorted.slice(0, 50);
+        refs.deseqTable.innerHTML = "";
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        [
+          ["gene_id", "Gene"],
+          ["baseMean", "baseMean"],
+          ["log2FoldChange", "log2FC"],
+          ["padj", "padj"],
+        ].forEach(([key, label]) => {
+          const th = document.createElement("th");
+          th.textContent = label;
+          th.addEventListener("click", () => {
+            deseqSort = {
+              key,
+              direction: deseqSort.key === key ? deseqSort.direction * -1 : 1,
+            };
+            renderDeseqTable(deseqRows);
+          });
+          headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        const tbody = document.createElement("tbody");
+        topRows.forEach((row) => {
+          const tr = document.createElement("tr");
+          const padj = Number(row.padj);
+          const lfc = Number(row.log2FoldChange);
+          tr.classList.toggle("significant", padj < 0.05 && Math.abs(lfc) > 1);
+          [row.gene_id, formatStat(row.baseMean), formatStat(row.log2FoldChange), formatStat(row.padj, 4)].forEach((value) => {
+            const td = document.createElement("td");
+            td.textContent = value ?? "";
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        refs.deseqTable.append(thead, tbody);
+      }
+
+      async function loadPipelineResults(jobId) {
+        refs.pipelineResults.classList.add("visible");
+        const [plotsResponse, deseqResponse, interpretationResponse] = await Promise.all([
+          fetch(`/api/run-pipeline/${encodeURIComponent(jobId)}/plots`),
+          fetch(`/api/run-pipeline/${encodeURIComponent(jobId)}/deseq2`),
+          fetch(`/api/run-pipeline/${encodeURIComponent(jobId)}/interpretation`),
+        ]);
+        const plots = await plotsResponse.json();
+        deseqRows = await deseqResponse.json();
+        const interpretation = await interpretationResponse.json();
+        refs.volcanoImg.src = plots.volcano;
+        refs.maImg.src = plots.ma;
+        refs.pcaImg.src = plots.pca;
+        refs.heatmapImg.src = plots.heatmap;
+        const sigRows = deseqRows.filter((row) => Number(row.padj) < 0.05 && Math.abs(Number(row.log2FoldChange)) > 1);
+        refs.volcanoStats.textContent = `${sigRows.length} significant transcripts at padj < 0.05 and |log2FC| > 1.`;
+        refs.maStats.textContent = `${deseqRows.length} tested transcripts across baseMean and fold-change range.`;
+        refs.pcaStats.textContent = "Samples are colored by condition using normalized count structure.";
+        refs.heatmapStats.textContent = "Top 50 transcripts are selected by adjusted p-value and z-score normalized.";
+        renderDeseqTable(deseqRows);
+        refs.pipelineInterpretation.innerHTML = formatAiText(interpretation.text || "");
+      }
+
+      refs.qcTab.addEventListener("click", () => switchAppTab("qc"));
+      refs.pipelineTab.addEventListener("click", () => switchAppTab("pipeline"));
+      refs.setupReferenceButton.addEventListener("click", setupReference);
+      refs.pipelineChooseFiles.addEventListener("click", () => refs.pipelineFileInput.click());
+      refs.pipelineFileInput.addEventListener("change", (event) => addPipelineFiles(event.target.files));
+      refs.pipelineRunButton.addEventListener("click", runPipeline);
+      refs.pipelineClearButton.addEventListener("click", clearPipelineFiles);
+      ["dragenter", "dragover"].forEach((type) => {
+        refs.pipelineDropZone.addEventListener(type, (event) => {
+          event.preventDefault();
+          refs.pipelineDropZone.classList.add("dragging");
+        });
+      });
+      ["dragleave", "drop"].forEach((type) => {
+        refs.pipelineDropZone.addEventListener(type, (event) => {
+          event.preventDefault();
+          refs.pipelineDropZone.classList.remove("dragging");
+          if (type === "drop") addPipelineFiles(event.dataTransfer.files);
+        });
+      });
+      refs.plotTabs.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-plot]");
+        if (!button) return;
+        const plot = button.dataset.plot;
+        refs.plotTabs.querySelectorAll("[data-plot]").forEach((tab) => tab.classList.toggle("active", tab.dataset.plot === plot));
+        document.querySelectorAll("[data-plot-panel]").forEach((panel) => panel.classList.toggle("active", panel.dataset.plotPanel === plot));
+      });
 
       refs.chooseFiles.addEventListener("click", () => refs.fileInput.click());
       refs.fileInput.addEventListener("change", (event) => addFiles(event.target.files));
@@ -1676,6 +2400,8 @@
 
       initializeTheme();
       renderFiles();
+      renderPipelineFiles();
+      checkReferenceStatus();
       loadJobs();
       applyTileLayout();
       clearLog();

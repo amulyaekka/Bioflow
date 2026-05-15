@@ -4,8 +4,16 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends fastqc default-jre-headless \
+    && apt-get install -y --no-install-recommends fastqc default-jre-headless fastp wget ca-certificates libgomp1 libtbb12 \
     && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://github.com/COMBINE-lab/salmon/releases/download/v1.10.0/salmon-1.10.0_linux_x86_64.tar.gz \
+    && tar xzf salmon-1.10.0_linux_x86_64.tar.gz \
+    && SALMON_BIN="$(find . -type f -path '*/bin/salmon' -print -quit)" \
+    && test -n "$SALMON_BIN" \
+    && cp "$SALMON_BIN" /usr/local/bin/salmon \
+    && chmod +x /usr/local/bin/salmon \
+    && rm -rf salmon-* salmon-1.10.0_linux_x86_64.tar.gz
 
 WORKDIR /app
 
